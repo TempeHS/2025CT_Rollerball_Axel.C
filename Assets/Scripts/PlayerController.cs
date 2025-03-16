@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMpro;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 0;
+    public TextMeshProUGUI countText;
 
     private Rigidbody rb;
+    private int count;
     private float movementX;
     private float movementY;
 
@@ -15,6 +18,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); 
+        count = 0;
+
+        SetCountText();
     }
     
     void OnMove(InputValue movementValue)
@@ -22,6 +28,12 @@ public class PlayerController : MonoBehaviour
         Vector2 movementVector = movementValue.Get<Vector2>();
         movementX = movementVector.x;
         movementY = movementVector.y;
+    }
+
+    void SetCountText()
+    {
+        countText.text = "Score: " + count.ToString();
+
     }
 
     void FixedUpdate()
@@ -39,6 +51,9 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.CompareTag("Pickup"))
         {
             other.gameObject.SetActive(false);
+            count = count + 1;
+
+            SetCountText();
         }
         
 
